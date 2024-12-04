@@ -48,7 +48,7 @@ html_template = """
 def extract_matriculas():
     results = []
     if request.method == "POST":
-        urls = request.form.get("urls", "").splitlines()  # Obtener las URLs del formulario, línea por línea
+        urls = request.form.get("urls", "").splitlines()  # Obtener las URLs del formulario
         pattern = r"/\d{8}/(\d{7,8})/"  # Expresión regular para encontrar matrículas
         for url in urls:
             matches = re.findall(pattern, url)  # Busca todas las coincidencias en cada URL
@@ -56,5 +56,9 @@ def extract_matriculas():
                 results.extend(matches)  # Agrega las matrículas encontradas a los resultados
     return render_template_string(html_template, results=results)
 
+# Configuración de ejecución
 if __name__ == "__main__":
-    app.run(debug=True)
+    # En Render, se utiliza el puerto definido por la variable de entorno PORT
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
